@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/user", userRoute);
-app.use("/secureExampleRoute", exemploeroute);
+app.use("/protected", exemploeroute);
 
 app.get('/', (req, res) => {
   res.send({ message: 'Hello World!' });

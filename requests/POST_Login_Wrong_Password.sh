@@ -2,6 +2,6 @@ curl --request POST \
   --url http://localhost:3000/user/login \
   --header 'Content-Type: application/json' \
   --data '{
-    "username": "newuser",
-    "password": "securepassword"
+    "email": "test@example.com",
+    "password": "wrongpassword"
 }'
