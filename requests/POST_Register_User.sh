@@ -6,3 +6,4 @@ curl --request POST \
     "email": "test@example.com",
     "password": "securepassword"
 }'
+

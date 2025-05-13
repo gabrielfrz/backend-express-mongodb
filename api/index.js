@@ -5,6 +5,8 @@ import db from './database/configdb.js';
 import userRoute from './routes/user.route.js';
 import exemploeroute from './routes/example.route.js';
 import moviesBooksRoutes from './routes/moviebook.route.js';
+import { swaggerUi, swaggerSpec } from './config/swagger.js';
+
 
 dotenv.config();
 db.connect();
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/user', userRoute);
 app.use('/protected', exemploeroute);
 app.use('/moviesbooks', moviesBooksRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Root
 app.get('/', (req, res) => {
