@@ -1,61 +1,70 @@
-// 📄 Arquivo: frontend-react/src/pages/Login/Login.jsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    setCredentials(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3000/user/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(credentials)
       });
 
       const data = await response.json();
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        toast.success('Login successful!');
-        setTimeout(() => navigate('/dashboard'), 2000);
+        toast.success('Login realizado com sucesso!');
+        setTimeout(() => navigate('/dashboard'), 1500);
       } else {
-        toast.error(data.message || 'Login failed.');
+        toast.error(data.message || 'Credenciais inválidas.');
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Network error. Try again later.');
+    } catch (error) {
+      toast.error('Erro de rede. Tente novamente.');
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', padding: '1rem' }}>
+    <div style={{ padding: 20, textAlign: 'center' }}>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 300, margin: '0 auto' }}>
         <input
           type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          placeholder="E-mail"
+          value={credentials.email}
+          onChange={handleChange}
           required
+          style={{ display: 'block', width: '100%', marginBottom: 10 }}
         />
-        <br /><br />
         <input
           type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          placeholder="Senha"
+          value={credentials.password}
+          onChange={handleChange}
           required
+          style={{ display: 'block', width: '100%', marginBottom: 10 }}
         />
-        <br /><br />
-        <button type="submit">Login</button>
+        <button type="submit">Entrar</button>
       </form>
       <ToastContainer />
     </div>

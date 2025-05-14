@@ -1,32 +1,23 @@
-// src/pages/Register/Register.jsx
 import React, { useState } from 'react';
+import { registerUser } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3000/user/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Erro ao registrar');
-      }
-
-      alert('Cadastro realizado com sucesso!');
+      const result = await registerUser(form.name, form.email, form.password);
+      console.log('Usuário cadastrado:', result);
       navigate('/login');
     } catch (err) {
       setError(err.message);
@@ -34,30 +25,12 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center', marginTop: '100px' }}>
       <h2>Cadastro</h2>
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        /><br />
-        <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        /><br />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        /><br />
+      <form onSubmit={handleSubmit}>
+        <input name="name" placeholder="Nome" onChange={handleChange} required /><br />
+        <input name="email" type="email" placeholder="E-mail" onChange={handleChange} required /><br />
+        <input name="password" type="password" placeholder="Senha" onChange={handleChange} required /><br />
         <button type="submit">Cadastrar</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
