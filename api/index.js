@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import db from './database/configdb.js';
-
+import cors from 'cors';
 import userRoute from './routes/user.route.js';
 import exemploeroute from './routes/example.route.js';
 import moviesBooksRoutes from './routes/moviebook.route.js';
@@ -12,7 +12,7 @@ dotenv.config();
 db.connect();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 // Routes
