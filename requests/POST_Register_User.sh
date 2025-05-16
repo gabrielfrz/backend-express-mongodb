@@ -1,5 +1,5 @@
 curl --request POST \
-  --url http://localhost:3000/user/register \
+  --url https://backend-express-eight-ashen.vercel.app/user/register \
   --header 'Content-Type: application/json' \
   --data '{
     "name": "Test User",
