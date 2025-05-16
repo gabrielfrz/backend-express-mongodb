@@ -1,14 +1,9 @@
 import mongoose from 'mongoose';
 
-const moviesBooksSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
+const movieBookSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['book', 'movie'],
+    enum: ['movie', 'book'],
     required: true
   },
   title: {
@@ -16,20 +11,28 @@ const moviesBooksSchema = new mongoose.Schema({
     required: true
   },
   authorOrDirector: {
-    type: String
+    type: String,
+    required: true
   },
   genre: {
-    type: String
+    type: String,
+    required: true
   },
   releaseYear: {
-    type: Number
+    type: Number,
+    required: true
   },
   completed: {
     type: Boolean,
     default: false
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 }, {
   timestamps: true
 });
 
-export default mongoose.model('MovieBook', moviesBooksSchema);
+export default mongoose.model('MovieBook', movieBookSchema);
